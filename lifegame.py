@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import time
 
-# パラメータ
+# parameters
 FIELD_H = 100
 FIELD_W = 180
 BONE_RATIO = 0.2
@@ -48,7 +48,7 @@ np.random.seed(0)
 field = init_field()
 
 while True:
-    # fps の計算
+    # fps
     current_t = time.perf_counter()
     cnt += 1
     if current_t - previous_t > 1.0: 
@@ -57,9 +57,9 @@ while True:
         fps = cnt / dt 
         cnt = 0
 
-    # field の更新
+    # update field
     if mode == 0:
-        # 通常のアップデート
+        # normal mode
         field = add_flame(field)
         field_next = np.zeros((FIELD_H, FIELD_W), dtype=np.uint8)
         for i in range(1,FIELD_H+1):
@@ -79,7 +79,7 @@ while True:
                     else:
                         field_next[i-1, j-1] = 0
     else:
-        # 高速アップデート
+        # fast update
         field2 = add_flame(field)
         templ = np.array([[1,1,1],[1,0,1],[1,1,1]], dtype=np.uint8)
         count = cv2.matchTemplate(field2, templ, cv2.TM_CCORR)
@@ -87,13 +87,13 @@ while True:
         count = count.astype(np.uint8)
         alive = (field == 1) * ((count == 2) + (count == 3))
         born = (field == 0) * (count == 3)
-        field_next = np.zeros_like(field, dtype=np.uint8) # 次世代 field3
+        field_next = np.zeros_like(field, dtype=np.uint8)
         field_next[np.where(alive)] = 1
         field_next[np.where(born)] = 1
     
     field = field_next
 
-    # 画面表示
+    # showing image
     img = field2img(field)
     mode_name =['Normal', 'Fast']
     imtext(img, '%s mode' % mode_name[mode], (5, 40), 3, 4, 
@@ -102,12 +102,12 @@ while True:
            60, 255)
     cv2.imshow('img', img)
  
-    # キー操作
+    # key control
     INPUT = cv2.waitKey(1) & 0xFF
-    if INPUT == ord(' '): # [space] モード切替
+    if INPUT == ord(' '): # mode change
         mode = 1- mode
-    if INPUT == ord('r'): # [r] フィールドのリセット
+    if INPUT == ord('r'): # initalize the field
         field = init_field()
-    if INPUT == ord('q'): # [q] 終了
+    if INPUT == ord('q'): # quit
         cv2.destroyAllWindows()
         break
