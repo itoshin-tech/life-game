@@ -1,6 +1,5 @@
 # life-game
-High speed life-game by matchTemplate in openCV  
-Make life game updates 20 times faster by using OpenCV template-matching functions (cv2.matchTemplate).
+Make life game updates 22 times faster by using OpenCV 2Dfilter functions (cv2.filter2D).
 
 See the movie.  
 <a href="https://www.youtube.com/embed/eEbGeviwPHg"
