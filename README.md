@@ -1,5 +1,6 @@
 # life-game
-High speed life-game by matchTemplate in openCV 
+High speed life-game by matchTemplate in openCV  
+Make life game updates 200 times faster by using OpenCV template-matching functions (cv2.matchTemplate).
 
 # my PC setting
 windows 10  
